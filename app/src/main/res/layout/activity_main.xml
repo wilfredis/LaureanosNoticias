@@ -32,6 +32,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/noti_Data"
         android:layout_width="410dp"
         android:layout_height="619dp"
         app:layout_constraintBottom_toBottomOf="parent"
