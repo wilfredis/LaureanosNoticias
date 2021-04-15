@@ -1,11 +1,11 @@
 package network
 
 import com.squareup.moshi.Json
+import java.sql.ClientInfoStatus
 
 data class Notiproperties(
-val id : String,
-val type: String,
-val cuerpo2: Notiproperties2,
-@Json(name = "img_src")
-val imgSrcUrl: String
+val status: String,
+val Resultado: String,
+val articles: List<articles>?
+
 )

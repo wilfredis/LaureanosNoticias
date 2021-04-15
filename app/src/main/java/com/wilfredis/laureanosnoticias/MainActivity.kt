@@ -1,5 +1,6 @@
 package com.wilfredis.laureanosnoticias
 
+import android.app.VoiceInteractor
 import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,11 +10,15 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.view.menu.ActionMenuItemView
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import network.NotiApi
 import network.Notiproperties
+import network.articles
+import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,38 +26,42 @@ import retrofit2.Response
 class MainActivity : AppCompatActivity() {
 
     lateinit var noti_Data: RecyclerView
+    lateinit var txtData: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        txtData = findViewById(R.id.txtData)
         noti_Data = findViewById(R.id.noti_Data)
         noti_Data.layoutManager = LinearLayoutManager(this)
-
+       // txtData.text = "lol" 
         getnoti()
     }
 
     private fun getnoti(){
 
         NotiApi.restrofitServices.getProperties().enqueue(
-                object : Callback<List<Notiproperties>>{
+                object : Callback<Notiproperties>{
 
-                    override fun onResponse(call: Call<List<Notiproperties>>, response: Response<List<Notiproperties>>) {
-                     noti_Data.adapter = NotiAdapter(response.body()!!)
-                      // textData.text = "Logrado ${response.body()?.size} propiedades"
+                    override fun onResponse(call: Call<Notiproperties>, response: Response<Notiproperties>) {
+                        val noti =response.body()?.articles
+                        txtData.text = noti?.size.toString();
+                        if (noti != null) {
+                                noti_Data.adapter = NotiAdapter(noti)
+                        }
+
                     }
 
-                    override fun onFailure(call: Call<List<Notiproperties>>, t: Throwable) {
-                      //  textData.text = "Err: " + t.message
+                    override fun onFailure(call: Call<Notiproperties>, t: Throwable) {
                     }
                 }
         )
-      //textData.text = "Respuesta"
     }
 
-    class NotiAdapter(var items: List<Notiproperties>) : RecyclerView.Adapter<NotiAdapter.ViewHolder>(){
+    class NotiAdapter(var items: List<articles>) : RecyclerView.Adapter<NotiAdapter.ViewHolder>(){
         class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
-            var image : ImageButton = itemView.findViewById(R.id.imageView)
+            var image : ImageView = itemView.findViewById(R.id.imageView)
+
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -61,12 +70,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            val properties : Notiproperties = items[position]
+            val properties : articles = items[position]
+            val imgUrl = properties.urlToImagen.toUri().buildUpon().scheme("https").build()
             Glide.with(holder.image.context)
-                    .load(properties.imgSrcUrl)
+                    .load(imgUrl)
+                   .apply(RequestOptions().placeholder(R.drawable.cargando).error(R.drawable.nodisponible))
                     .into(holder.image)
-
-            TODO("Not yet implemented")
         }
 
         override fun getItemCount(): Int {

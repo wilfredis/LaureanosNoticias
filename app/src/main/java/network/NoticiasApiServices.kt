@@ -21,7 +21,7 @@ private val retrofit = Retrofit.Builder()
 
 interface NoticiaApiService{
    @GET("top-headlines?sources=bbc-news&apiKey=8512cd4ad18b4466a107bdceda66fce6")
-    fun getProperties(): Call<List<Notiproperties>>
+    fun getProperties(): Call<Notiproperties>
 }
 
 object  NotiApi{

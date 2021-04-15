@@ -2,13 +2,21 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:title="Pais">
-        <menu >
-            <item android:title="Item" />
+        <menu>
+            <item android:title="Estados Unidos" />
+            <item android:title="Canada" />
+            <item android:title="Japon" />
+            <item android:title="Colombia" />
+            <item android:title="Venezuela" />
         </menu>
     </item>
     <item android:title="Categoria">
         <menu>
-            <item android:title="Item" />
+            <item android:title="Negocios" />
+            <item android:title="technology" />
+            <item android:title="Entretenimiento" />
+            <item android:title="Ciencias" />
+            <item android:title="Salud" />
         </menu>
     </item>
 </menu>
