@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         txtData = findViewById(R.id.txtData)
         noti_Data = findViewById(R.id.noti_Data)
         noti_Data.layoutManager = LinearLayoutManager(this)
-       // txtData.text = "lol" 
+       // txtData.text = "lol"
         getnoti()
     }
 
@@ -42,14 +42,12 @@ class MainActivity : AppCompatActivity() {
 
         NotiApi.restrofitServices.getProperties().enqueue(
                 object : Callback<Notiproperties>{
-
                     override fun onResponse(call: Call<Notiproperties>, response: Response<Notiproperties>) {
                         val noti =response.body()?.articles
                         txtData.text = noti?.size.toString();
                         if (noti != null) {
                                 noti_Data.adapter = NotiAdapter(noti)
                         }
-
                     }
 
                     override fun onFailure(call: Call<Notiproperties>, t: Throwable) {
